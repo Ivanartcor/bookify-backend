@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
+import { CompaniesModule } from './companies/companies.module';
+import { ServicesModule } from './services/services.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
@@ -17,7 +21,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Útil en desarrollo, para sincronizar las entidades con la BD
     }),
-    // Aquí importarás tus módulos de funcionalidades (por ejemplo, UsersModule, AppointmentsModule, etc.)
+    // Aquí importamos los módulos de funcionalidades (por ejemplo, UsersModule, AppointmentsModule, etc.)
+    UsersModule,
+    CompaniesModule,
+    ServicesModule,
+    AppointmentsModule,
   ],
   controllers: [],
   providers: [],
