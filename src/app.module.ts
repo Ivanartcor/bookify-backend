@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { CompaniesModule } from './companies/companies.module';
 import { ServicesModule } from './services/services.module';
 import { AppointmentsModule } from './appointments/appointments.module';
+import { AppointmentEmployeesModule } from './appointment-employees/appointment-employees.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AppointmentsModule } from './appointments/appointments.module';
     CompaniesModule,
     ServicesModule,
     AppointmentsModule,
+    AppointmentEmployeesModule,
   ],
   controllers: [],
   providers: [],

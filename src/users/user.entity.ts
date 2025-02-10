@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Company } from 'src/companies/company.entity';// Asegúrate de tener esta entidad creada o ajusta la ruta
 import { Appointment } from 'src/appointments/appointment.entity';
+import { AppointmentEmployee } from 'src/appointment-employees/appointment-employees.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -52,10 +53,15 @@ export class User {
   @ManyToOne(() => Company, (company) => company.users, {
     nullable: true,
     onDelete: 'SET NULL',
+    eager: true, // Carga automáticamente la relación
   })
   @JoinColumn({ name: 'company_id' })
   company: Company;
 
   @OneToMany(() => Appointment, (appointment) => appointment.client)
   appointments: Appointment[];
+
+  @OneToMany(() => AppointmentEmployee, (assignment) => assignment.employee)
+  appointmentEmployees: AppointmentEmployee[];
+
 }
