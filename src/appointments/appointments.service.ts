@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Appointment } from './appointment.entity';
@@ -17,10 +17,14 @@ export class AppointmentsService {
   }
 
   async findOne(id: number): Promise<Appointment> {
-    return await this.appointmentsRepository.findOne({
+    const appointment = await this.appointmentsRepository.findOne({
       where: { id },
       relations: ['client', 'company', 'service'],
     });
+    if (!appointment) {
+      throw new NotFoundException(`Appointment with ID ${id} not found`);
+    }
+    return appointment;
   }
 
   async create(appointmentData: Partial<Appointment>): Promise<Appointment> {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Service } from './service.entity';
@@ -15,9 +15,12 @@ export class ServicesService {
   }
 
   async findOne(id: number): Promise<Service> {
-    return await this.servicesRepository.findOne({ where: { id }, relations: ['company'] });
+    const service = await this.servicesRepository.findOne({ where: { id }, relations: ['company'] });
+    if (!service) {
+      throw new NotFoundException(`Service with ID ${id} not found`);
+    }
+    return service;
   }
-
   async create(serviceData: Partial<Service>): Promise<Service> {
     const newService = this.servicesRepository.create(serviceData);
     return await this.servicesRepository.save(newService);

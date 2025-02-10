@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from './company.entity';
@@ -17,9 +17,12 @@ export class CompaniesService {
 
   // Obtener una compañía por ID
   async findOne(id: number): Promise<Company> {
-    return await this.companiesRepository.findOne({ where: { id } });
+    const company = await this.companiesRepository.findOne({ where: { id } });
+    if (!company) {
+      throw new NotFoundException(`Company with ID ${id} not found`);
+    }
+    return company;
   }
-
   // Crear una nueva compañía
   async create(companyData: Partial<Company>): Promise<Company> {
     const newCompany = this.companiesRepository.create(companyData);
