@@ -12,6 +12,8 @@ import { User } from '../users/user.entity';
 import { Company } from '../companies/company.entity';
 import { Service } from '../services/service.entity';
 import { AppointmentEmployee } from 'src/appointment-employees/appointment-employees.entity';
+import { Notification } from 'src/notifications/notification.entity';
+
 
 @Entity({ name: 'appointments' })
 export class Appointment {
@@ -59,5 +61,9 @@ export class Appointment {
 
   @OneToMany(() => AppointmentEmployee, (assignment) => assignment.appointment)
   appointmentEmployees: AppointmentEmployee[];
+
+  @OneToMany(() => Notification, (notification) => notification.appointment)
+notifications: Notification[];
+
 
 }

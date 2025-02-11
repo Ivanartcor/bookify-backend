@@ -6,6 +6,19 @@ import { CompaniesModule } from './companies/companies.module';
 import { ServicesModule } from './services/services.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { AppointmentEmployeesModule } from './appointment-employees/appointment-employees.module';
+import { CategoriesModule } from './categories/categories.module';
+import { CompanyCategoriesModule } from './company-categories/company-categories.module';
+import { ReviewsModule } from './reviews/reviews.module';
+import { ReviewImagesModule } from './review-images/review-images.module';
+import { ReviewRepliesModule } from './review-replies/review-replies.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { SupportTicketsModule } from './support-tickets/support-tickets.module';
+import { TicketAttachmentsModule } from './ticket-attachments/ticket-attachments.module';
+import { AddressesModule } from './addresses/addresses.module';
+import { CitiesModule } from './cities/cities.module';
+import { ServiceAvailabilityModule } from './service-availability/service-availability.module';
+import { UserFavoriteCompaniesModule } from './user-favorite-companies/user-favorite-companies.module';
+import { UserFavoriteServicesModule } from './user-favorite-services/user-favorite-services.module';
 
 @Module({
   imports: [
@@ -28,6 +41,19 @@ import { AppointmentEmployeesModule } from './appointment-employees/appointment-
     ServicesModule,
     AppointmentsModule,
     AppointmentEmployeesModule,
+    CategoriesModule,
+    CompanyCategoriesModule,
+    ReviewsModule,
+    ReviewImagesModule,
+    ReviewRepliesModule,
+    NotificationsModule,
+    SupportTicketsModule,
+    TicketAttachmentsModule,
+    AddressesModule,
+    CitiesModule,
+    ServiceAvailabilityModule,
+    UserFavoriteCompaniesModule,
+    UserFavoriteServicesModule,
   ],
   controllers: [],
   providers: [],

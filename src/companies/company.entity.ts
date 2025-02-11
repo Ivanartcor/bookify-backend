@@ -8,6 +8,12 @@ import {
 import { User } from '../users/user.entity';
 import { Service } from 'src/services/service.entity';
 import { Appointment } from 'src/appointments/appointment.entity';
+import { CompanyCategory } from 'src/company-categories/company-categories.entity';
+import { Review } from 'src/reviews/review.entity';
+import { Notification } from 'src/notifications/notification.entity';
+import { SupportTicket } from 'src/support-tickets/support-ticket.entity';
+import { Address } from 'src/addresses/address.entity';
+import { UserFavoriteCompanies } from 'src/user-favorite-companies/user-favorite-companies.entity';
 
 @Entity({ name: 'companies' })
 export class Company {
@@ -48,5 +54,25 @@ export class Company {
     @OneToMany(() => Appointment, (appointment) => appointment.company)
     appointments: Appointment[];
 
+    @OneToMany(() => CompanyCategory, (companyCategory) => companyCategory.company)
+    companyCategories: CompanyCategory[];
+
+    // Relación inversa: Una compañía puede tener muchas reseñas
+    @OneToMany(() => Review, (review) => review.company)
+    reviews: Review[];
+
+    @OneToMany(() => Notification, (notification) => notification.company)
+notifications: Notification[];
+
+  // Tickets asociados a la empresa
+  @OneToMany(() => SupportTicket, (ticket) => ticket.company)
+  supportTickets: SupportTicket[];
+
+
+  @OneToMany(() => Address, (address) => address.company)
+addresses: Address[];
+
+@OneToMany(() => UserFavoriteCompanies, (favorite) => favorite.company)
+favoritedBy: UserFavoriteCompanies[];
 
 }
