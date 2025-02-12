@@ -19,6 +19,7 @@ import { CitiesModule } from './cities/cities.module';
 import { ServiceAvailabilityModule } from './service-availability/service-availability.module';
 import { UserFavoriteCompaniesModule } from './user-favorite-companies/user-favorite-companies.module';
 import { UserFavoriteServicesModule } from './user-favorite-services/user-favorite-services.module';
+import { CompanyStatisticsViewModule } from './company-statistics-view/company-statistics-view.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { UserFavoriteServicesModule } from './user-favorite-services/user-favori
     ServiceAvailabilityModule,
     UserFavoriteCompaniesModule,
     UserFavoriteServicesModule,
+    CompanyStatisticsViewModule,
   ],
   controllers: [],
   providers: [],
