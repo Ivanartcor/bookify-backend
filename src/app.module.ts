@@ -20,6 +20,7 @@ import { ServiceAvailabilityModule } from './service-availability/service-availa
 import { UserFavoriteCompaniesModule } from './user-favorite-companies/user-favorite-companies.module';
 import { UserFavoriteServicesModule } from './user-favorite-services/user-favorite-services.module';
 import { CompanyStatisticsViewModule } from './company-statistics-view/company-statistics-view.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { CompanyStatisticsViewModule } from './company-statistics-view/company-s
     UserFavoriteCompaniesModule,
     UserFavoriteServicesModule,
     CompanyStatisticsViewModule,
+    UploadModule,
   ],
   controllers: [],
   providers: [],
