@@ -6,6 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
+       // Extrae el token del encabezado Authorization: Bearer <token>
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extrae el token del header Authorization
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET || 'secretKey',
