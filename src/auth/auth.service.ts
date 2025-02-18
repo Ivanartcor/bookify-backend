@@ -4,6 +4,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UpdatePasswordDto } from 'src/users/dto/update-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,9 @@ export class AuthService {
 
   // Método para loguear (generar el token)
   async login(user: any) {
+    // Actualizamos el campo last_login
+  await this.usersService.update(user.id, { last_login: new Date() });
+  
     const payload = { username: user.email, sub: user.id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
@@ -43,4 +47,26 @@ export class AuthService {
     const { password, ...result } = user;
     return result;
   }
+
+   // Método para actualizar la contraseña
+   async updatePassword(userId: number, updatePasswordDto: UpdatePasswordDto): Promise<any> {
+    // Primero, obtener el usuario
+    const user = await this.usersService.findOne(userId);
+    if (!user) {
+      throw new UnauthorizedException('Usuario no encontrado');
+    }
+    // Verificar la contraseña actual
+    const isMatch = await bcrypt.compare(updatePasswordDto.currentPassword, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('La contraseña actual es incorrecta');
+    }
+    // Encriptar la nueva contraseña
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(updatePasswordDto.newPassword, saltRounds);
+    // Actualizar el usuario
+    await this.usersService.update(userId, { password: hashedPassword });
+    // Opcional: Retornar un mensaje o el usuario sin contraseña
+    return { message: 'Contraseña actualizada exitosamente' };
+  }
+
 }

@@ -17,6 +17,7 @@ import { SupportTicket } from 'src/support-tickets/support-ticket.entity';
 import { Address } from 'src/addresses/address.entity';
 import { UserFavoriteCompanies } from 'src/user-favorite-companies/user-favorite-companies.entity';
 import { UserFavoriteServices } from 'src/user-favorite-services/user-favorite-services.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class User {
@@ -30,6 +31,7 @@ export class User {
   email: string;
 
   @Column({ length: 255 })
+  @Exclude()
   password: string;
 
   // Enum de roles: 'client', 'company', 'employee'
