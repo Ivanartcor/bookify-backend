@@ -1,12 +1,36 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { plainToInstance } from 'class-transformer';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { GetUser } from './dto/get-user.decorator';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
+
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getAuthenticatedUser(@GetUser() user: any): Promise<User> {
+    // user.userId es extraído del token.
+    return await this.usersService.findOne(user.userId);
+  }
+
+
+  // endpoint para actualizar el usuario autenticado
+  @UseGuards(JwtAuthGuard)
+  @Put('me')
+  async updateAuthenticatedUser(
+    @Body() updateData: Partial<User>,
+    @GetUser() user: any,
+  ): Promise<User> {
+    const updatedUser = await this.usersService.update(user.userId, updateData);
+    return plainToInstance(User, updatedUser); // Asegura que se devuelvan los datos actualizados
+  }
+
+
 
   // Endpoint para obtener todos los usuarios
   @Get()
@@ -41,9 +65,18 @@ export class UsersController {
   }
 
   // Endpoint para eliminar un usuario
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async deleteUser(@Param('id') id: number): Promise<void> {
+  async deleteUser(
+    @Param('id') id: number,
+    @GetUser() user: any
+  ): Promise<void> {
+    // Compara el ID del usuario autenticado con el ID recibido en la ruta.
+    if (user.userId !== id) {
+      throw new UnauthorizedException('No estás autorizado para eliminar este usuario');
+    }
     return await this.usersService.delete(id);
   }
+
 
 }

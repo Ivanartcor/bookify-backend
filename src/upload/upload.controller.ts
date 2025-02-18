@@ -24,7 +24,7 @@ export class UploadController {
     // Retornamos la ruta para que el frontend pueda usarla y guardarla en la entidad correspondiente
     return {
       message: 'File uploaded successfully',
-      filePath: `/uploads/${file.filename}`,
+      filePath: `http://Localhost:3000/uploads/${file.filename}`,
     };
   }
 }
