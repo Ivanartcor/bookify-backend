@@ -40,4 +40,11 @@ export class CompaniesController {
     async deleteCompany(@Param('id') id: number): Promise<void> {
         return await this.companiesService.remove(id);
     }
+
+
+    // Obtener empresas por ID de ciudad**
+  @Get('by-city/:cityId')
+  async getCompaniesByCity(@Param('cityId') cityId: number): Promise<Company[]> {
+    return await this.companiesService.findByCity(cityId);
+  }
 }
