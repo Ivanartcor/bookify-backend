@@ -34,4 +34,13 @@ export class ServicesService {
   async delete(id: number): Promise<void> {
     await this.servicesRepository.delete(id);
   }
+
+  // Obtener todos los servicios de una empresa específica
+async findByCompany(companyId: number): Promise<Service[]> {
+  return await this.servicesRepository.find({
+    where: { company: { id: companyId } },
+    relations: ['company'],
+  });
+}
+
 }

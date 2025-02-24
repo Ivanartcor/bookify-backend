@@ -33,4 +33,11 @@ export class ServicesController {
   async delete(@Param('id') id: number): Promise<void> {
     return await this.servicesService.delete(id);
   }
+
+  //Obtener servicios por companyId
+@Get('company/:companyId')
+async getServicesByCompany(@Param('companyId') companyId: number): Promise<Service[]> {
+  return await this.servicesService.findByCompany(companyId);
+}
+
 }
