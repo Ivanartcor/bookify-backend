@@ -35,4 +35,14 @@ export class UserFavoriteCompaniesService {
   async remove(userId: number, companyId: number): Promise<void> {
     await this.favoriteCompaniesRepository.delete({ userId, companyId });
   }
+
+
+  // Obtener todas las empresas favoritas de un usuario específico
+async findByUser(userId: number): Promise<UserFavoriteCompanies[]> {
+  return await this.favoriteCompaniesRepository.find({
+    where: { userId },
+    relations: ['company'], // Incluye la información de la empresa
+  });
+}
+
 }

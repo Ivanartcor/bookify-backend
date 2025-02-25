@@ -35,4 +35,12 @@ export class UserFavoriteCompaniesController {
   ): Promise<void> {
     return await this.favoriteCompaniesService.remove(userId, companyId);
   }
+
+  // GET /user-favorite-companies/user/:userId - Obtiene todas las empresas favoritas de un usuario
+@Get('user/:userId')
+async getFavoritesByUser(@Param('userId') userId: number): Promise<UserFavoriteCompanies[]> {
+  return await this.favoriteCompaniesService.findByUser(userId);
+}
+
+
 }

@@ -35,4 +35,14 @@ export class UserFavoriteServicesService {
   async remove(userId: number, serviceId: number): Promise<void> {
     await this.favoriteServicesRepository.delete({ userId, serviceId });
   }
+
+
+  // Obtener todos los servicios favoritos de un usuario específico
+async findByUser(userId: number): Promise<UserFavoriteServices[]> {
+  return await this.favoriteServicesRepository.find({
+    where: { userId },
+    relations: ['service'], // Incluye la información del servicio
+  });
+}
+
 }
