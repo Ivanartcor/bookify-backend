@@ -65,7 +65,7 @@ export class User {
     eager: true, // Carga automáticamente la relación
   })
   @JoinColumn({ name: 'company_id' })
-  company: Company;
+  company: Company | null;
 
   @OneToMany(() => Appointment, (appointment) => appointment.client)
   appointments: Appointment[];

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Company } from 'src/companies/company.entity';
 
 
 
@@ -57,8 +58,22 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
+  async findEmployeesByCompany(companyId: number): Promise<User[]> {
+    return await this.usersRepository.find({
+      where: { company: { id: companyId }, role: 'employee' },
+    });
+  }
   
-
+  async assignEmployeeToCompany(employeeId: number, companyId: number | null): Promise<User> {
+    const employee = await this.usersRepository.findOne({ where: { id: employeeId, role: 'employee' } });
+    if (!employee) throw new NotFoundException('Empleado no encontrado');
+  
+    employee.company = companyId ? await this.usersRepository.manager.findOne(Company, { where: { id: companyId } }) : null;
+  
+    return await this.usersRepository.save(employee);
+  }
+  
+  
 }
 
 

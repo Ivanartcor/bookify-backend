@@ -66,17 +66,40 @@ export class UsersController {
 
   // Endpoint para eliminar un usuario
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  async deleteUser(
-    @Param('id') id: number,
-    @GetUser() user: any
-  ): Promise<void> {
-    // Compara el ID del usuario autenticado con el ID recibido en la ruta.
-    if (user.userId !== id) {
-      throw new UnauthorizedException('No estás autorizado para eliminar este usuario');
-    }
+@Delete(':id')
+async deleteUser(
+  @Param('id') id: number,
+  @GetUser() user: any,
+): Promise<void> {
+  const userToDelete = await this.usersService.findOne(id);
+  
+  // Permitir que un administrador elimine empleados de su empresa
+  if (user.role === 'company' && userToDelete.company?.id === user.company?.id) {
     return await this.usersService.delete(id);
   }
+
+  // Si no es admin de la empresa, solo puede eliminarse a sí mismo
+  if (user.userId !== id) {
+    throw new UnauthorizedException('No estás autorizado para eliminar este usuario');
+  }
+
+  return await this.usersService.delete(id);
+}
+
+
+  // Obtener todos los empleados de una empresa específica
+@Get('company/:companyId/employees')
+async getEmployeesByCompany(@Param('companyId') companyId: number): Promise<User[]> {
+  return await this.usersService.findEmployeesByCompany(companyId);
+}
+
+@Put(':id/assign-company')
+async assignEmployeeToCompany(
+  @Param('id') employeeId: number,
+  @Body() data: { companyId: number | null },
+): Promise<User> {
+  return await this.usersService.assignEmployeeToCompany(employeeId, data.companyId);
+}
 
 
 }
