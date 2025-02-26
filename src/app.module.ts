@@ -22,6 +22,7 @@ import { UserFavoriteServicesModule } from './user-favorite-services/user-favori
 import { CompanyStatisticsViewModule } from './company-statistics-view/company-statistics-view.module';
 import { UploadModule } from './upload/upload.module';
 import { AuthModule } from './auth/auth.module';
+import { ServiceEmployeesModule } from './service-employees/service-employees.module';
 
 @Module({
   imports: [
@@ -60,6 +61,8 @@ import { AuthModule } from './auth/auth.module';
     CompanyStatisticsViewModule,
     UploadModule,
     AuthModule,
+    ServiceEmployeesModule,
+   
   ],
   controllers: [],
   providers: [],

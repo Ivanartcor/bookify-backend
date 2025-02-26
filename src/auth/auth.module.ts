@@ -5,6 +5,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { CompaniesModule } from '../companies/companies.module';  // 👈 Importamos CompaniesModule
+
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { AuthController } from './auth.controller';
       secret: process.env.JWT_SECRET || 'secretKey', // Usa una variable de entorno para la clave
       signOptions: { expiresIn: '1h' }, // Configura el tiempo de expiración del token
     }),
+    CompaniesModule
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],

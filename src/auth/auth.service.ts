@@ -5,13 +5,17 @@ import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UpdatePasswordDto } from 'src/users/dto/update-password.dto';
+import { CompaniesService } from 'src/companies/companies.service';
+
+
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ) {}
+    private companiesService: CompaniesService,
+  ) { }
 
   // Método para validar el usuario (ya existente)
   async validateUser(email: string, pass: string): Promise<any> {
@@ -27,8 +31,8 @@ export class AuthService {
   // Método para loguear (generar el token)
   async login(user: any) {
     // Actualizamos el campo last_login
-  await this.usersService.update(user.id, { last_login: new Date() });
-  
+    await this.usersService.update(user.id, { last_login: new Date() });
+
     const payload = { username: user.email, sub: user.id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
@@ -42,14 +46,32 @@ export class AuthService {
     if (existingUser) {
       throw new ConflictException('El correo electrónico ya está registrado');
     }
-    const user = await this.usersService.create(createUserDto);
-    // Opcionalmente, puedes retornar el usuario creado o generar un token
-    const { password, ...result } = user;
-    return result;
+    let user = await this.usersService.create(createUserDto);
+    let company;
+
+    // 📌 Si el usuario es una empresa, creamos la empresa automáticamente
+    if (user.role === 'company') {
+      company = await this.companiesService.create({
+        name: user.name,  // Se usa el nombre del usuario como nombre de la empresa
+        email: user.email,
+        phone: user.phone || undefined,
+        short_description: 'Nueva empresa registrada',
+        logo: undefined,
+        banner_image: undefined,
+        website: undefined,
+      });
+
+      // Asignar el `companyId` al usuario
+      user = await this.usersService.update(user.id, { company });
+      //  Excluir la contraseña en la respuesta
+      const { password, ...userWithoutPassword } = user;
+      return { ...userWithoutPassword, company };
+    }
   }
 
-   // Método para actualizar la contraseña
-   async updatePassword(userId: number, updatePasswordDto: UpdatePasswordDto): Promise<any> {
+
+  // Método para actualizar la contraseña
+  async updatePassword(userId: number, updatePasswordDto: UpdatePasswordDto): Promise<any> {
     // Primero, obtener el usuario
     const user = await this.usersService.findOne(userId);
     if (!user) {
@@ -70,3 +92,4 @@ export class AuthService {
   }
 
 }
+
