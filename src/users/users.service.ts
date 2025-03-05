@@ -49,6 +49,11 @@ export class UsersService {
 
   // Actualiza un usuario existente
   async update(id: number, updateData: Partial<User>): Promise<User> {
+    
+    if (updateData.company === null) {
+      updateData.company = null; // Asegurar que TypeORM lo acepte correctamente
+    }
+    
     await this.usersRepository.update(id, updateData);
     return await this.findOne(id);
   }
@@ -72,7 +77,6 @@ export class UsersService {
   
     return await this.usersRepository.save(employee);
   }
-  
   
 }
 
