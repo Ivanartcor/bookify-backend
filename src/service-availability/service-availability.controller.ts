@@ -38,4 +38,11 @@ export class ServiceAvailabilityController {
   async remove(@Param('id') id: number): Promise<void> {
     return await this.serviceAvailabilityService.remove(id);
   }
+
+  // GET /service-availability/service/:serviceId → Obtiene solo las disponibilidades del servicio específico
+@Get('service/:serviceId')
+async getByService(@Param('serviceId') serviceId: number): Promise<ServiceAvailability[]> {
+  return await this.serviceAvailabilityService.findByService(serviceId);
+}
+
 }

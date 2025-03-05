@@ -43,4 +43,12 @@ export class ServiceAvailabilityService {
   async remove(id: number): Promise<void> {
     await this.serviceAvailabilityRepository.delete(id);
   }
+
+  async findByService(serviceId: number): Promise<ServiceAvailability[]> {
+    return await this.serviceAvailabilityRepository.find({
+      where: { service: { id: serviceId } },  // 🔥 Filtrar por el ID del servicio
+      relations: ['service'],
+    });
+  }
+  
 }
