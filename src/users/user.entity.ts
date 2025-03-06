@@ -30,8 +30,8 @@ export class User {
   @Column({ length: 255, unique: true })
   email: string;
 
-  @Column({ length: 255 })
   @Exclude()
+  @Column({ length: 255 })
   password: string;
 
   // Enum de roles: 'client', 'company', 'employee'

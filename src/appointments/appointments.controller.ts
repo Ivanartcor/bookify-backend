@@ -29,6 +29,7 @@ export class AppointmentsController {
   // 🔹 Crear una nueva cita
   @Post()
   async create(@Body() appointmentData: Partial<Appointment>): Promise<Appointment> {
+    //console.log(' Datos recibidos en el backend:', appointmentData);
     return await this.appointmentsService.create(appointmentData);
   }
 

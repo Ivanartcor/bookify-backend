@@ -19,6 +19,8 @@ async function bootstrap() {
     prefix: '/uploads/',  // Accesible en http://localhost:3000/uploads/archivo.jpg
   });
 
+  
+
   // Escuchar en el puerto definido en process.env.PORT o por defecto en 3000
   await app.listen(process.env.PORT ?? 3000);
 }

@@ -13,6 +13,7 @@ import { Company } from '../companies/company.entity';
 import { Service } from '../services/service.entity';
 import { AppointmentEmployee } from 'src/appointment-employees/appointment-employees.entity';
 import { Notification } from 'src/notifications/notification.entity';
+import { IsDate } from 'class-validator';
 
 
 @Entity({ name: 'appointments' })
@@ -36,10 +37,11 @@ export class Appointment {
   service: Service;
 
   @Column({ type: 'timestamp' })
+  
   appointment_date: Date;
 
   // ENUM: 'pending', 'confirmed', 'canceled', 'completed', 'rescheduled'
-  @Column({ type: 'enum', enum: ['pending', 'confirmed', 'canceled', 'completed', 'rescheduled'], default: 'pending' })
+  @Column({ type: 'enum', enum: ['pending', 'confirmed', 'canceled', 'completed', 'rescheduled'], default: 'confirmed' })
   status: string;
 
   // ENUM: 'paid', 'pending', 'refunded'
@@ -64,6 +66,7 @@ export class Appointment {
 
   @OneToMany(() => Notification, (notification) => notification.appointment)
 notifications: Notification[];
+  appointment: Appointment;
 
 
 }
